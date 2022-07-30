@@ -15,11 +15,6 @@
       Working on address <input id="input" type="text" bind:value={address} placeholder="0x..." />.
     </p>
     {#if address !== undefined}
-      <!-- <p>
-        Working on address <span id="address"
-          ><a target="_blank" href={`https://etherscan.io/address/${address}`}>{address}</a></span
-        >.
-      </p> -->
       <DepositHistory {address} />
     {/if}
   </QueryClientProvider>

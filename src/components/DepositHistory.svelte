@@ -72,11 +72,12 @@
   }
 
   const getUserHistory = async (address: string) => {
+    // TODO: Implement pagination...
     const resp = await request<GetDepositHistoryResponse>(
       endpoint,
       gql`{
       user(id: "${address.toLowerCase()}") {
-        depositHistory {
+        depositHistory(skip: 0, take: 1000) {
           id
           amount
           timestamp
@@ -87,7 +88,7 @@
             decimals
           }
         }
-        redeemUnderlyingHistory {
+        redeemUnderlyingHistory(skip: 0, take: 1000) {
           id
           amount
           timestamp
@@ -109,6 +110,8 @@
     const parsedRedeems = rawHistory.user.redeemUnderlyingHistory.map((e) =>
       parseUserHistoryEvent(e, "in")
     )
+
+    // Apparently there is a type error here. Most likely the [] syntax?
     const fullHistory: Array<ParsedUserHistoryEvent> = []
       .concat(parsedDeposits)
       .concat(parsedRedeems)
@@ -139,8 +142,8 @@
     return sortedHistory
   }
 
-  const userHistory = useQuery<Array<ParsedUserHistoryEvent>>(["userHistory", address], () =>
-    getUserHistory(address)
+  const userHistory = useQuery<Array<ParsedUserHistoryEvent>>(["userHistory", fetchAddress], () =>
+    getUserHistory(fetchAddress), { retry: 0 }
   )
 </script>
 
@@ -187,7 +190,7 @@
   }
 
   #amount {
-    min-width: 6em;
+    min-width: 12em;
     display: inline-block;
   }
 
