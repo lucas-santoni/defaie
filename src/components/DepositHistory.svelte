@@ -142,8 +142,10 @@
     return sortedHistory
   }
 
-  const userHistory = useQuery<Array<ParsedUserHistoryEvent>>(["userHistory", fetchAddress], () =>
-    getUserHistory(fetchAddress), { retry: 0 }
+  const userHistory = useQuery<Array<ParsedUserHistoryEvent>>(
+    ["userHistory", fetchAddress],
+    () => getUserHistory(fetchAddress),
+    { retry: 0 }
   )
 </script>
 
