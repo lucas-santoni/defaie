@@ -59,7 +59,7 @@
       amount: new BigNumber(event.amount),
       reward: undefined,
       balance: undefined,
-      timestamp: new Date(event.timestamp),
+      timestamp: new Date(event.timestamp * 1000),
       hash: match[0],
       asset: {
         address: event.reserve.id, // TODO: Parse this
@@ -164,7 +164,9 @@
       {#each $userHistory.data as event}
         <li class={event.direction === "in" ? "green" : "red"}>
           <a target="_blank" href={`https://etherscan.io/tx/${event.hash}`}>
-            {event.direction === "in" ? "↗" : "↘"}
+            <span id="arrow">↪</span>
+            <span id="date">{event.timestamp.toLocaleString()}</span>
+            <span>{event.direction === "in" ? "↗" : "↘"}</span>
             <span id="amount">{event.amount.shiftedBy(-event.asset.decimals).toFixed(2)}</span>
             <span id="asset">{event.asset.symbol}</span>
             <span id="balance" class={event.balance?.isPositive() ? "green" : "red"}
@@ -188,7 +190,10 @@
     font-family: "Courier New", Courier, monospace;
     list-style: none;
     padding: 0;
-    margin-left: 1em;
+  }
+
+  #date {
+    color: #aaa;
   }
 
   #amount {
@@ -216,5 +221,13 @@
 
   .green {
     color: green;
+  }
+
+  #arrow {
+    color: rgba(0, 0, 0, 0);
+  }
+
+  a:hover #arrow {
+    color: inherit;
   }
 </style>
