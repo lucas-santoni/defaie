@@ -75,30 +75,30 @@
     const resp = await request<GetDepositHistoryResponse>(
       endpoint,
       gql`{
-	    user(id: "${address.toLowerCase()}") {
-		    depositHistory {
-			    id
-			    amount
+      user(id: "${address.toLowerCase()}") {
+        depositHistory {
+          id
+          amount
           timestamp
-			    reserve {
+          reserve {
             id
-				    name
+            name
             symbol
             decimals
-			    }
-		    }
+          }
+        }
         redeemUnderlyingHistory {
-			    id
-			    amount
+          id
+          amount
           timestamp
-			    reserve {
+          reserve {
             id
-				    name
+            name
             symbol
             decimals
-			    }
-		    }
-	    }
+          }
+        }
+      }
     }`
     )
 
