@@ -12,7 +12,13 @@
 
   <QueryClientProvider client={queryClient}>
     <p>
-      Working on address <input id="input" type="text" bind:value={address} placeholder="0x..." />.
+      Working on address <input
+        id="input"
+        type="text"
+        bind:value={address}
+        placeholder="0x..."
+        on:blur={() => queryClient.invalidateQueries("userHistory")}
+      />.
     </p>
     {#if address !== undefined}
       <DepositHistory {address} />
