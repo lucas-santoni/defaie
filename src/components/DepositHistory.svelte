@@ -143,8 +143,8 @@
   }
 
   const userHistory = useQuery<Array<ParsedUserHistoryEvent>>(
-    ["userHistory", fetchAddress],
-    () => getUserHistory(fetchAddress),
+    ["userHistory", address],
+    () => getUserHistory(address),
     { retry: 0 }
   )
 </script>
