@@ -1,57 +1,53 @@
-<h1>DeFaie</h1>
+<script lang="ts">
+  import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query"
+  import DepositHistory from "../components/DepositHistory.svelte"
 
-<div>
-  <!-- {#if !address || $depositHistory.status === 'loading' || $depositHistory.data === undefined}
-    Loading...
-  {:else if $depositHistory.status === 'error'}
-    <span>Error: {$depositHistory.error}</span>
-  {:else}
-    <div>
-      <p>{$depositHistory.data}</p>
-    </div>
-  {/if} -->
+  const queryClient = new QueryClient()
+
+  let address: string | undefined
+</script>
+
+<div id="main">
+  <h1 id="logo"><a href="/">🤕 DeF<span id="aie">aie</span></a></h1>
+
+  <QueryClientProvider client={queryClient}>
+    <p>
+      Working on address <input id="input" type="text" bind:value={address} placeholder="0x..." />.
+    </p>
+    {#if address !== undefined}
+      <!-- <p>
+        Working on address <span id="address"
+          ><a target="_blank" href={`https://etherscan.io/address/${address}`}>{address}</a></span
+        >.
+      </p> -->
+      <DepositHistory {address} />
+    {/if}
+  </QueryClientProvider>
 </div>
 
-<script lang="ts">
-  import { request, gql } from "graphql-request"
-  import { useQuery } from "@sveltestack/svelte-query"
-
-  const endpoint = "https://api.thegraph.com/subgraphs/name/aave/protocol-v2"
-
-  interface DepositHistory {
-    depositHistory: Array<{
-      id: string
-      amount: string
-      reserve: {
-        name: string
-      }
-    }>
+<style>
+  #main {
+    width: fit-content;
+    overflow-x: scroll;
+    white-space: nowrap;
   }
 
-  interface GetDepositHistoryResponse {
-    data: {
-      user: {
-        depositHistory: DepositHistory
-      }
-    }
+  #input {
+    border-radius: 0;
+    border-color: #eee;
+    box-shadow: none;
+    font-family: "Courier New", Courier, monospace;
   }
 
-  const getDeposithistory = async (address: string) => {
-    const resp = await request<GetDepositHistoryResponse>(endpoint, gql`{
-	    user(id: "${address}") {
-		    depositHistory {
-			    id
-			    amount
-			    reserve {
-				    name
-			    }
-		    }
-	    }
-    }`)
-
-    return resp.data.user.depositHistory
+  :global(a) {
+    text-decoration: none;
   }
 
-  const address = "0xeaa81a8e73db6b8efd34ecee34cbddf98635163b"
-  // const depositHistory = useQuery<DepositHistory>(["depositHistory", address], () => getDeposithistory(address))
-</script>
+  #logo a {
+    color: black;
+  }
+
+  #aie {
+    color: red;
+  }
+</style>

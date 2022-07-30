@@ -32,7 +32,11 @@
   "type": "module",
   "dependencies": {
     "@sveltestack/svelte-query": "^1.6.0",
+    "@types/lodash": "^4.14.182",
+    "bignumber.js": "^9.0.2",
+    "broadcast-channel": "^4.14.0",
     "graphql": "^16.5.0",
-    "graphql-request": "^4.3.0"
+    "graphql-request": "^4.3.0",
+    "lodash": "^4.17.21"
   }
 }
